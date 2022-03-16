@@ -26,17 +26,12 @@ $fs=$preview ? 0.5 : 0.2;
 //------------------------------------------
 
 /* [Fonts] */
-text_font="Poppins:style=SemiBold";
-underscore_font="Poppins";
-symbol_font="DnDSymbols";
+text_font="LiberationSerif:style=Bold";
+underscore_font="LiberationSerif:style=Bold";
+symbol_font="SWAstro";
 
-/* Make sure our fonts get loaded! */
-use <Poppins-SemiBold.ttf>
-use <Poppins-Regular.ttf>
-use <DnDSymbols.ttf>
- 
 /* [Dice to Draw] */
-d2=false;
+d2=true;
 d3=false;
 d4=false;
 d4c=false;
@@ -48,7 +43,9 @@ d10=false;
 d00=false;
 d12=false;
 d12r=false;
-d20=true;
+d20=false;
+render_text=false;
+spacing_multiplier=1.5;
 
 /* [Dice Size] */
 d2_size=24;
@@ -76,11 +73,6 @@ bumper_size=0.3;
 edge_rounding=0;   //[0:0.1:3]
 corner_rounding=0; //[0:1:60]
 corner_clipping=0; //[0:1:60]
-
-/* [More Options] */
-render_text=false;
-spacing_multiplier=1.5;
-
 
 /* [d2 Coin] */
 d2_sides=10; //[0,3,4,5,6,8,10,12]
@@ -350,8 +342,8 @@ d20_text_v_push=0;
 d20_text_h_push=0;
 d20_text_spacing=1; //[0.5:0.02:1.5]
 d20_num_4_h_push=-3;
-d20_text=[" ","5","13","11","7","15","19","6","9","18","4","14","17","16","3","12","2","20","8","10"];
-d20_symbols=["x",undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef];
+d20_text=["1","5","13","11","7","15","19","6","9","18","4","14","17","16","3","12","2","20","8","10"];
+d20_symbols=[undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef];
 d20_symbol_size=23;
 d20_symbol_v_push=0;
 d20_symbol_h_push=0;
@@ -360,9 +352,9 @@ d20_underscore_size=18;
 d20_underscore_v_push=-12;
 d20_underscore_h_push=0;
 d20_bumpers=[true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
-d20_rotate=[180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-d20_adj_size=[0,0,-1,-1,0,-1,-1,0,0,-1,0,-1,-1,-1,0,-1,0,-1,0,-1];
-d20_adj_v_push=[-1,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0];
+d20_rotate=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+d20_adj_size=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+d20_adj_v_push=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_h_push=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_spacing=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_depth=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];

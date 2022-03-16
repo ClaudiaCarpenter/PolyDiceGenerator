@@ -26,28 +26,23 @@ $fs=$preview ? 0.5 : 0.2;
 //------------------------------------------
 
 /* [Fonts] */
-text_font="Poppins:style=SemiBold";
-underscore_font="Poppins";
-symbol_font="DnDSymbols";
+text_font="LiberationSerif:style=Bold";
+underscore_font="LiberationSerif:style=Bold";
+symbol_font="SWAstro";
 
-/* Make sure our fonts get loaded! */
-use <Poppins-SemiBold.ttf>
-use <Poppins-Regular.ttf>
-use <DnDSymbols.ttf>
- 
 /* [Dice to Draw] */
-d2=false;
-d3=false;
-d4=false;
-d4c=false;
-d4i=false;
-d4p=false;
-d6=false;
-d8=false;
-d10=false;
-d00=false;
-d12=false;
-d12r=false;
+d2=true;
+d3=true;
+d4=true;
+d4c=true;
+d4i=true;
+d4p=true;
+d6=true;
+d8=true;
+d10=true;
+d00=true;
+d12=true;
+d12r=true;
 d20=true;
 
 /* [Dice Size] */
@@ -63,7 +58,7 @@ d10_size=16;
 d00_size=16;
 d12_size=18;
 d12r_size=18;
-d20_size=22;
+d20_size=20;
 
 /* [Depth, Stroke, and Bumpers] */
 text_depth=0.6;
@@ -76,11 +71,6 @@ bumper_size=0.3;
 edge_rounding=0;   //[0:0.1:3]
 corner_rounding=0; //[0:1:60]
 corner_clipping=0; //[0:1:60]
-
-/* [More Options] */
-render_text=false;
-spacing_multiplier=1.5;
-
 
 /* [d2 Coin] */
 d2_sides=10; //[0,3,4,5,6,8,10,12]
@@ -350,8 +340,8 @@ d20_text_v_push=0;
 d20_text_h_push=0;
 d20_text_spacing=1; //[0.5:0.02:1.5]
 d20_num_4_h_push=-3;
-d20_text=[" ","5","13","11","7","15","19","6","9","18","4","14","17","16","3","12","2","20","8","10"];
-d20_symbols=["x",undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef];
+d20_text=["1","5","13","11","7","15","19","6","9","18","4","14","17","16","3","12","2","20","8","10"];
+d20_symbols=[undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef,undef];
 d20_symbol_size=23;
 d20_symbol_v_push=0;
 d20_symbol_h_push=0;
@@ -360,9 +350,9 @@ d20_underscore_size=18;
 d20_underscore_v_push=-12;
 d20_underscore_h_push=0;
 d20_bumpers=[true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
-d20_rotate=[180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-d20_adj_size=[0,0,-1,-1,0,-1,-1,0,0,-1,0,-1,-1,-1,0,-1,0,-1,0,-1];
-d20_adj_v_push=[-1,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0];
+d20_rotate=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+d20_adj_size=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+d20_adj_v_push=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_h_push=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_spacing=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 d20_adj_depth=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -428,7 +418,7 @@ d20_dl_rotate=[0,-120,0,120,-120,0,120,0,0,-120,120,120,-120,120,120,0,-120,0,0,
 // Generation, functions, modules
 //------------------------------------------
 
-spacing=d20_size*spacing_multiplier;
+spacing=d20_size*1.5;
 
 if(d2) move(x=spacing,y=-spacing) drawd2();
 if(d3) move(x=-spacing,y=-spacing*2) drawd3();
@@ -447,7 +437,6 @@ if(d20) right(spacing) drawd20();
 txt_font=str_strip(text_font,"\"");
 under_font=str_strip(underscore_font,"\"");
 sym_font=str_strip(symbol_font,"\"");
-
 
 function fix_quotes(x)=[for (i=x) if(i=="undef" || i==undef) undef else if (i=="true" || i==true) true else if (i=="false" || i==false) false else i];
 
@@ -480,23 +469,21 @@ module drawd2(){
         }
         
         //render numbers & symbols
-        if(render_text)
-            for(i=[0,1])
-                rotate([180,0,0]) rotate([180*i,0,0])
-                translate([0,0,d2_height*i+edge_rounding*2*i])
-                down(text_depth+d2_adj_depth[i])
-                linear_extrude(height=2*text_depth+d2_adj_depth[i])
-                move(x=(d2_text_h_push+d2_adj_h_push[i])*d2_size/100,y=(d2_text_v_push+d2_adj_v_push[i])*d2_size/100)
-                    // rotate([45,45,90])
-                if(is_list(txt_merged[i])) //a symbol
-                    move(x=d2_symbol_h_push*d2_size/100,y=d2_symbol_v_push*d2_size/100)
-                    zrot(d2_rotate[i]+base_rotate[i])
-                    offset(delta=sym_stroke)
-                    text(txt_merged[i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-                else //a number
-                    zrot(d2_rotate[i]+base_rotate[i])
-                    offset(delta=txt_stroke)
-                    text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
+        for(i=[0,1])
+            rotate([180,0,0]) rotate([180*i,0,0])
+            translate([0,0,d2_height*i+edge_rounding*2*i])
+            down(text_depth+d2_adj_depth[i])
+            linear_extrude(height=2*text_depth+d2_adj_depth[i])
+            move(x=(d2_text_h_push+d2_adj_h_push[i])*d2_size/100,y=(d2_text_v_push+d2_adj_v_push[i])*d2_size/100)
+            if(is_list(txt_merged[i])) //a symbol
+                move(x=d2_symbol_h_push*d2_size/100,y=d2_symbol_v_push*d2_size/100)
+                zrot(d2_rotate[i]+base_rotate[i])
+                offset(delta=sym_stroke)
+                text(txt_merged[i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+            else //a number
+                zrot(d2_rotate[i]+base_rotate[i])
+                offset(delta=txt_stroke)
+                text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
     }
 }
 
@@ -531,24 +518,23 @@ module drawd3(){
         }
         
         //render numbers & symbols
-        if(render_text)
-            for(j=[0:2])
-                translate([0,0,d3_circum_rad/2])
-            for(i=[0:1])
-                rotate([120*j,0,0])
-                translate([0,0,-d3_circum_rad/2])
-                rotate([0,180,0])
-                zrot(d3_rotate[j*2+i]+base_rotate[j*2+i])
-                down(text_depth+d3_adj_depth[j*2+i])
-                linear_extrude(height=2*text_depth+d3_adj_depth[j*2+i])
-                move(x=(d3_text_h_push+d3_adj_h_push[j*2+i])*d3_size/100,y=(d3_text_v_push+d3_adj_v_push[j*2+i])*d3_size/100)
-                if(is_list(txt_merged[j*2+i])) //a symbol
-                    move(x=d3_symbol_h_push*d3_size/100,y=d3_symbol_v_push*d3_size/100)
-                    offset(delta=sym_stroke)
-                    text(txt_merged[j*2+i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-                else //a number
-                    offset(delta=txt_stroke)
-                    text(txt_merged[j*2+i],size=txt_mult+adj_txt[j*2+i],font=txt_font,halign="center",valign="center");
+        for(j=[0:2])
+            translate([0,0,d3_circum_rad/2])
+        for(i=[0:1])
+            rotate([120*j,0,0])
+            translate([0,0,-d3_circum_rad/2])
+            rotate([0,180,0])
+            zrot(d3_rotate[j*2+i]+base_rotate[j*2+i])
+            down(text_depth+d3_adj_depth[j*2+i])
+            linear_extrude(height=2*text_depth+d3_adj_depth[j*2+i])
+            move(x=(d3_text_h_push+d3_adj_h_push[j*2+i])*d3_size/100,y=(d3_text_v_push+d3_adj_v_push[j*2+i])*d3_size/100)
+            if(is_list(txt_merged[j*2+i])) //a symbol
+                move(x=d3_symbol_h_push*d3_size/100,y=d3_symbol_v_push*d3_size/100)
+                offset(delta=sym_stroke)
+                text(txt_merged[j*2+i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+            else //a number
+                offset(delta=txt_stroke)
+                text(txt_merged[j*2+i],size=txt_mult+adj_txt[j*2+i],font=txt_font,halign="center",valign="center");
     }
 }
     
@@ -569,7 +555,6 @@ module drawd4(){
     
     difference()
     {
-    
         if(add_bumpers && edge_rounding==0 && corner_rounding==0 && corner_clipping==0)
             //render bumpers
             union()
@@ -596,24 +581,23 @@ module drawd4(){
             regular_polyhedron("tetrahedron",side=d4_side,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text)
-            for(i=[0,1,2])
-                regular_polyhedron("tetrahedron",side=d4_side,anchor=BOTTOM,draw=false)
-                zrot(d4_rotate[$faceindex+i*4]+base_rotate[$faceindex+i*4])
-                down(text_depth+d4_adj_depth[$faceindex+i*4])
-                linear_extrude(height=2*text_depth+d4_adj_depth[$faceindex+i*4])
-                move(x=(d4_text_h_push+d4_adj_h_push[$faceindex+i*4])*d4_size/100,y=(d4_text_v_push+d4_adj_v_push[$faceindex+i*4])*d4_size/100)
-                if(is_list(txt_merged[$faceindex+i*4])) //a symbol
-                    move(x=d4_symbol_h_push*d4_size/100,y=d4_symbol_v_push*d4_size/100)
-                    offset(delta=sym_stroke)
-                    text(txt_merged[$faceindex+i*4][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-                else if(txt_merged[$faceindex+i*4]=="4") //a number 4
-                    right(d4_num_4_h_push*d4_size/100)
-                    offset(delta=txt_stroke)
-                    text(txt_merged[$faceindex+i*4],size=txt_mult+adj_txt[$faceindex+i*4],font=txt_font,halign="center",valign="center");
-                else //a number thats's not 4
-                    offset(delta=txt_stroke)
-                    text(txt_merged[$faceindex+i*4],size=txt_mult+adj_txt[$faceindex+i*4],font=txt_font,halign="center",valign="center");
+        for(i=[0,1,2])
+            regular_polyhedron("tetrahedron",side=d4_side,anchor=BOTTOM,draw=false)
+            zrot(d4_rotate[$faceindex+i*4]+base_rotate[$faceindex+i*4])
+            down(text_depth+d4_adj_depth[$faceindex+i*4])
+            linear_extrude(height=2*text_depth+d4_adj_depth[$faceindex+i*4])
+            move(x=(d4_text_h_push+d4_adj_h_push[$faceindex+i*4])*d4_size/100,y=(d4_text_v_push+d4_adj_v_push[$faceindex+i*4])*d4_size/100)
+            if(is_list(txt_merged[$faceindex+i*4])) //a symbol
+                move(x=d4_symbol_h_push*d4_size/100,y=d4_symbol_v_push*d4_size/100)
+                offset(delta=sym_stroke)
+                text(txt_merged[$faceindex+i*4][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+            else if(txt_merged[$faceindex+i*4]=="4") //a number 4
+                right(d4_num_4_h_push*d4_size/100)
+                offset(delta=txt_stroke)
+                text(txt_merged[$faceindex+i*4],size=txt_mult+adj_txt[$faceindex+i*4],font=txt_font,halign="center",valign="center");
+            else //a number thats's not 4
+                offset(delta=txt_stroke)
+                text(txt_merged[$faceindex+i*4],size=txt_mult+adj_txt[$faceindex+i*4],font=txt_font,halign="center",valign="center");
     }
 }
 
@@ -666,35 +650,33 @@ module drawd4c(){
         }
         
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
-            zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d4c_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d4c_adj_depth[$faceindex])
-            move(x=(d4c_text_h_push+d4c_adj_h_push[$faceindex])*d4c_size/100,y=(d4c_text_v_push+d4c_adj_v_push[$faceindex])*d4c_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d4c_symbol_h_push*d4c_size/100,y=d4c_symbol_v_push*d4c_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d4c_num_4_h_push*d4c_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a number thats's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            
-            //render pips
-            regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
-            zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapips("d4c",d4c_pips[$faceindex],d4c_adj_depth[$faceindex],d4c_pip_fn);
-            
-            //render pip symbols
-            d4c_pip_symbols=fix_quotes(d4c_pip_symbols);
-            regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
-            zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapipsymbols("d4c",d4c_pip_symbol_pos[$faceindex],d4c_pip_symbols[$faceindex],d4c_pip_symbol_rotate[$faceindex],d4c_adj_depth[$faceindex]);
-        }
+        regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
+        zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d4c_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d4c_adj_depth[$faceindex])
+        move(x=(d4c_text_h_push+d4c_adj_h_push[$faceindex])*d4c_size/100,y=(d4c_text_v_push+d4c_adj_v_push[$faceindex])*d4c_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d4c_symbol_h_push*d4c_size/100,y=d4c_symbol_v_push*d4c_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d4c_num_4_h_push*d4c_size/100)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a number thats's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        
+        //render pips
+        regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
+        zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapips("d4c",d4c_pips[$faceindex],d4c_adj_depth[$faceindex],d4c_pip_fn);
+        
+        //render pip symbols
+        d4c_pip_symbols=fix_quotes(d4c_pip_symbols);
+        regular_polyhedron("cube",side=d4c_size,anchor=BOTTOM,draw=false)
+        zrot(d4c_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapipsymbols("d4c",d4c_pip_symbol_pos[$faceindex],d4c_pip_symbols[$faceindex],d4c_pip_symbol_rotate[$faceindex],d4c_adj_depth[$faceindex]);
     }
 }
 
@@ -736,35 +718,33 @@ module drawd4i(){
         }
         
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
-            zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d4i_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d4i_adj_depth[$faceindex])
-            move(x=(d4i_text_h_push+d4i_adj_h_push[$faceindex])*d4i_size/100,y=(d4i_text_v_push+d4i_adj_v_push[$faceindex])*d4i_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d4i_symbol_h_push*d4i_size/100,y=d4i_symbol_v_push*d4i_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d4i_num_4_h_push*d4i_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a number thats's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            
-            //render pips
-            regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
-            zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapips("d4i",d4i_pips[$faceindex],d4i_adj_depth[$faceindex],d4i_pip_fn);
-            
-            //render pip symbols
-            d4i_pip_symbols=fix_quotes(d4i_pip_symbols);
-            regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
-            zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapipsymbols("d4i",d4i_pip_symbol_pos[$faceindex],d4i_pip_symbols[$faceindex],d4i_pip_symbol_rotate[$faceindex],d4i_adj_depth[$faceindex]);
-        }
+        regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
+        zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d4i_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d4i_adj_depth[$faceindex])
+        move(x=(d4i_text_h_push+d4i_adj_h_push[$faceindex])*d4i_size/100,y=(d4i_text_v_push+d4i_adj_v_push[$faceindex])*d4i_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d4i_symbol_h_push*d4i_size/100,y=d4i_symbol_v_push*d4i_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d4i_num_4_h_push*d4i_size/100)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a number thats's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        
+        //render pips
+        regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
+        zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapips("d4i",d4i_pips[$faceindex],d4i_adj_depth[$faceindex],d4i_pip_fn);
+        
+        //render pip symbols
+        d4i_pip_symbols=fix_quotes(d4i_pip_symbols);
+        regular_polyhedron("cube",side=d4i_size,anchor=BOTTOM,draw=false)
+        zrot(d4i_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapipsymbols("d4i",d4i_pip_symbol_pos[$faceindex],d4i_pip_symbols[$faceindex],d4i_pip_symbol_rotate[$faceindex],d4i_adj_depth[$faceindex]);
     }
 }
 
@@ -820,26 +800,25 @@ module drawd4p(){
         }
             
         //render numbers & symbols
-        if(render_text)
-            for(i=[0:3])
-                rotate([90,0,0]) rotate([0,90*i,0])  
-                translate([d4p_size/2,0,0])
-                rotate([0,90,90-d4p_face_angle])
-                move(x=(d4p_text_h_push+d4p_adj_h_push[i])*d4p_size/100,y=(d4p_text_v_push+d4p_adj_v_push[i])*d4p_size/100)
-                zrot(d4p_rotate[i]+base_rotate[i])
-                down(text_depth+d4p_adj_depth[i])
-                linear_extrude(height=2*text_depth+d4p_adj_depth[i])
-                if(is_list(txt_merged[i])) //a symbol
-                    move(x=d4p_symbol_h_push*d4p_size/100,y=d4p_symbol_v_push*d4p_size/100)
-                    offset(delta=sym_stroke)
-                    text(txt_merged[i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-                else if(txt_merged[i]=="4") //a number 4
-                    right(d4p_num_4_h_push*d4p_size/100)
-                    offset(delta=txt_stroke)
-                    text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
-                else //a number thats's not 4
-                    offset(delta=txt_stroke)
-                    text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
+        for(i=[0:3])
+            rotate([90,0,0]) rotate([0,90*i,0])  
+            translate([d4p_size/2,0,0])
+            rotate([0,90,90-d4p_face_angle])
+            move(x=(d4p_text_h_push+d4p_adj_h_push[i])*d4p_size/100,y=(d4p_text_v_push+d4p_adj_v_push[i])*d4p_size/100)
+            zrot(d4p_rotate[i]+base_rotate[i])
+            down(text_depth+d4p_adj_depth[i])
+            linear_extrude(height=2*text_depth+d4p_adj_depth[i])
+            if(is_list(txt_merged[i])) //a symbol
+                move(x=d4p_symbol_h_push*d4p_size/100,y=d4p_symbol_v_push*d4p_size/100)
+                offset(delta=sym_stroke)
+                text(txt_merged[i][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+            else if(txt_merged[i]=="4") //a number 4
+                right(d4p_num_4_h_push*d4p_size/100)
+                offset(delta=txt_stroke)
+                text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
+            else //a number thats's not 4
+                offset(delta=txt_stroke)
+                text(txt_merged[i],size=txt_mult+adj_txt[i],font=txt_font,halign="center",valign="center");
     }
 }
 
@@ -888,48 +867,46 @@ module drawd6(){
             regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,rounding=edge_rounding);
         
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
-            zrot(d6_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
-            down(text_depth+d6_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d6_adj_depth[$faceindex])
-            move(x=(d6_text_h_push+d6_adj_h_push[$faceindex])*d6_size/100,y=(d6_text_v_push+d6_adj_v_push[$faceindex])*d6_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d6_symbol_h_push*d6_size/100,y=d6_symbol_v_push*d6_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d6_num_4_h_push*d6_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d6_text_spacing,halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
-            zrot(d6_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
-            down(text_depth+d6_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d6_adj_depth[$faceindex])
-            move(x=d6_underscore_h_push*d6_size/100,y=d6_underscore_v_push*d6_size/100)
+        regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
+        zrot(d6_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
+        down(text_depth+d6_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d6_adj_depth[$faceindex])
+        move(x=(d6_text_h_push+d6_adj_h_push[$faceindex])*d6_size/100,y=(d6_text_v_push+d6_adj_v_push[$faceindex])*d6_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d6_symbol_h_push*d6_size/100,y=d6_symbol_v_push*d6_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d6_num_4_h_push*d6_size/100)
             offset(delta=txt_stroke)
-            text(d6_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-            
-            //render pips
-            regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
-            zrot(d6_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapips("d6",d6_pips[$faceindex],d6_adj_depth[$faceindex],d6_pip_fn);
-            
-            //render pip symbols
-            d6_pip_symbols=fix_quotes(d6_pip_symbols);
-            regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
-            zrot(d6_rotate[$faceindex]+base_rotate[$faceindex])
-            drwapipsymbols("d6",d6_pip_symbol_pos[$faceindex],d6_pip_symbols[$faceindex],d6_pip_symbol_rotate[$faceindex],d6_adj_depth[$faceindex]);
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d6_text_spacing,halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
+        zrot(d6_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
+        down(text_depth+d6_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d6_adj_depth[$faceindex])
+        move(x=d6_underscore_h_push*d6_size/100,y=d6_underscore_v_push*d6_size/100)
+        offset(delta=txt_stroke)
+        text(d6_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
+        
+        //render pips
+        regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
+        zrot(d6_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapips("d6",d6_pips[$faceindex],d6_adj_depth[$faceindex],d6_pip_fn);
+        
+        //render pip symbols
+        d6_pip_symbols=fix_quotes(d6_pip_symbols);
+        regular_polyhedron("cube",side=d6_size,anchor=BOTTOM,draw=false)
+        zrot(d6_rotate[$faceindex]+base_rotate[$faceindex])
+        drwapipsymbols("d6",d6_pip_symbol_pos[$faceindex],d6_pip_symbols[$faceindex],d6_pip_symbol_rotate[$faceindex],d6_adj_depth[$faceindex]);
     }
 }
 
@@ -977,37 +954,35 @@ module drawd8(){
             regular_polyhedron("octahedron",side=d8_side,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("octahedron",side=d8_side,anchor=BOTTOM,draw=false)
-            zrot(d8_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d8_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d8_adj_depth[$faceindex])
-            move(x=(d8_text_h_push+d8_adj_h_push[$faceindex])*d8_size/100,y=(d8_text_v_push+d8_adj_v_push[$faceindex])*d8_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d8_symbol_h_push*d8_size/100,y=d8_symbol_v_push*d8_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d8_num_4_h_push*d8_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d8_text_spacing,halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("octahedron",side=d8_side,anchor=BOTTOM,draw=false)
-            zrot(d8_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d8_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d8_adj_depth[$faceindex])
-            move(x=d8_underscore_h_push*d8_size/100,y=d8_underscore_v_push*d8_size/100)
+        regular_polyhedron("octahedron",side=d8_side,anchor=BOTTOM,draw=false)
+        zrot(d8_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d8_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d8_adj_depth[$faceindex])
+        move(x=(d8_text_h_push+d8_adj_h_push[$faceindex])*d8_size/100,y=(d8_text_v_push+d8_adj_v_push[$faceindex])*d8_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d8_symbol_h_push*d8_size/100,y=d8_symbol_v_push*d8_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d8_num_4_h_push*d8_size/100)
             offset(delta=txt_stroke)
-            text(d8_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d8_text_spacing,halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("octahedron",side=d8_side,anchor=BOTTOM,draw=false)
+        zrot(d8_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d8_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d8_adj_depth[$faceindex])
+        move(x=d8_underscore_h_push*d8_size/100,y=d8_underscore_v_push*d8_size/100)
+        offset(delta=txt_stroke)
+        text(d8_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
     }
 }
 
@@ -1056,37 +1031,36 @@ module drawd10(){
             regular_polyhedron("trapezohedron",faces=10,side=d10_sside,longside=d10_size,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("trapezohedron",faces=10,side=d10_sside,longside=d10_size,anchor=BOTTOM,draw=false)
-            zrot(d10_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d10_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d10_adj_depth[$faceindex])
-            move(x=(d10_text_h_push+d10_adj_h_push[$faceindex])*d10_size/100,y=(d10_text_v_push+d10_adj_v_push[$faceindex])*d10_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d10_symbol_h_push*d10_size/100,y=d10_symbol_v_push*d10_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d10_num_4_h_push*d10_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d10_text_spacing,halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("trapezohedron",faces=10,side=d10_sside,longside=d10_size,anchor=BOTTOM,draw=false)
-            zrot(d10_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d10_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d10_adj_depth[$faceindex])
-            move(x=d10_underscore_h_push*d10_size/100,y=d10_underscore_v_push*d10_size/100)
+        regular_polyhedron("trapezohedron",faces=10,side=d10_sside,longside=d10_size,anchor=BOTTOM,draw=false)
+        zrot(d10_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d10_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d10_adj_depth[$faceindex])
+        move(x=(d10_text_h_push+d10_adj_h_push[$faceindex])*d10_size/100,y=(d10_text_v_push+d10_adj_v_push[$faceindex])*d10_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d10_symbol_h_push*d10_size/100,y=d10_symbol_v_push*d10_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d10_num_4_h_push*d10_size/100)
             offset(delta=txt_stroke)
-            text(d10_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d10_text_spacing,halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("trapezohedron",faces=10,side=d10_sside,longside=d10_size,anchor=BOTTOM,draw=false)
+        zrot(d10_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d10_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d10_adj_depth[$faceindex])
+        move(x=d10_underscore_h_push*d10_size/100,y=d10_underscore_v_push*d10_size/100)
+        offset(delta=txt_stroke)
+        text(d10_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
+        
     }
 }
 
@@ -1135,38 +1109,36 @@ module drawd00(){
             regular_polyhedron("trapezohedron",faces=10,side=d00_sside,longside=d00_size,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("trapezohedron",faces=10,side=d00_sside,longside=d00_size,anchor=BOTTOM,draw=false)
-            zrot(d00_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
-            down(text_depth+d00_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d00_adj_depth[$faceindex])
-            move(x=(d00_text_h_push+d00_adj_h_push[$faceindex])*d00_size/100,y=(d00_text_v_push+d00_adj_v_push[$faceindex])*d00_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d00_symbol_h_push*d00_size/100,y=d00_symbol_v_push*d00_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else //a double digit number
-                if(d00_angle_text) { //downsize "0" if text is angled
-                    if(txt_merged[$faceindex]=="10") {
-                        right(d00_10_h_push*d00_size/100)
-                        offset(delta=txt_stroke)
-                        text(txt_merged[$faceindex][0],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-                        right(txt_mult*d00_10_0_padding/100)
-                        offset(delta=txt_stroke)
-                        text(txt_merged[$faceindex][1],size=txt_mult*d00_0_size/100,font=txt_font,halign="center",valign="center");
-                    } else {
-                        offset(delta=txt_stroke)
-                        text(txt_merged[$faceindex][0],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-                        right(txt_mult*d00_0_padding/100)
-                        offset(delta=txt_stroke)
-                        text(txt_merged[$faceindex][1],size=txt_mult*d00_0_size/100,font=txt_font,spacing=d00_text_spacing-d00_adj_spacing[$faceindex],halign="center",valign="center");
-                    }
-                } else {
-                    right(space_mult)
+        regular_polyhedron("trapezohedron",faces=10,side=d00_sside,longside=d00_size,anchor=BOTTOM,draw=false)
+        zrot(d00_rotate[$faceindex]+base_rotate[$faceindex]+rotate_mod)
+        down(text_depth+d00_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d00_adj_depth[$faceindex])
+        move(x=(d00_text_h_push+d00_adj_h_push[$faceindex])*d00_size/100,y=(d00_text_v_push+d00_adj_v_push[$faceindex])*d00_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d00_symbol_h_push*d00_size/100,y=d00_symbol_v_push*d00_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else //a double digit number
+            if(d00_angle_text) { //downsize "0" if text is angled
+                if(txt_merged[$faceindex]=="10") {
+                    right(d00_10_h_push*d00_size/100)
                     offset(delta=txt_stroke)
-                    text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d00_text_spacing+d00_adj_spacing[$faceindex],halign="center",valign="center");
+                    text(txt_merged[$faceindex][0],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+                    right(txt_mult*d00_10_0_padding/100)
+                    offset(delta=txt_stroke)
+                    text(txt_merged[$faceindex][1],size=txt_mult*d00_0_size/100,font=txt_font,halign="center",valign="center");
+                } else {
+                    offset(delta=txt_stroke)
+                    text(txt_merged[$faceindex][0],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+                    right(txt_mult*d00_0_padding/100)
+                    offset(delta=txt_stroke)
+                    text(txt_merged[$faceindex][1],size=txt_mult*d00_0_size/100,font=txt_font,spacing=d00_text_spacing-d00_adj_spacing[$faceindex],halign="center",valign="center");
                 }
-        }
+            } else {
+                right(space_mult)
+                offset(delta=txt_stroke)
+                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d00_text_spacing+d00_adj_spacing[$faceindex],halign="center",valign="center");
+            }
     }
 }
 
@@ -1214,37 +1186,35 @@ module drawd12(){
             regular_polyhedron("dodecahedron",ir=d12_size/2,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("dodecahedron",ir=d12_size/2,anchor=BOTTOM,draw=false)
-            zrot(d12_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d12_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d12_adj_depth[$faceindex])
-            move(x=(d12_text_h_push+d12_adj_h_push[$faceindex])*d12_size/100,y=(d12_text_v_push+d12_adj_v_push[$faceindex])*d12_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d12_symbol_h_push*d12_size/100,y=d12_symbol_v_push*d12_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d12_num_4_h_push*d12_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d12_text_spacing+d12_adj_spacing[$faceindex],halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("dodecahedron",ir=d12_size/2,anchor=BOTTOM,draw=false)
-            zrot(d12_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d12_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d12_adj_depth[$faceindex])
-            move(x=d12_underscore_h_push*d12_size/100,y=d12_underscore_v_push*d12_size/100)
+        regular_polyhedron("dodecahedron",ir=d12_size/2,anchor=BOTTOM,draw=false)
+        zrot(d12_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d12_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d12_adj_depth[$faceindex])
+        move(x=(d12_text_h_push+d12_adj_h_push[$faceindex])*d12_size/100,y=(d12_text_v_push+d12_adj_v_push[$faceindex])*d12_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d12_symbol_h_push*d12_size/100,y=d12_symbol_v_push*d12_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d12_num_4_h_push*d12_size/100)
             offset(delta=txt_stroke)
-            text(d12_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d12_text_spacing+d12_adj_spacing[$faceindex],halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("dodecahedron",ir=d12_size/2,anchor=BOTTOM,draw=false)
+        zrot(d12_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d12_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d12_adj_depth[$faceindex])
+        move(x=d12_underscore_h_push*d12_size/100,y=d12_underscore_v_push*d12_size/100)
+        offset(delta=txt_stroke)
+        text(d12_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
     }
 }
 
@@ -1291,37 +1261,36 @@ module drawd12r(){
             regular_polyhedron("rhombic dodecahedron",ir=d12r_size/2,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("rhombic dodecahedron",ir=d12r_size/2,anchor=BOTTOM,draw=false)
-            zrot(d12r_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d12r_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d12r_adj_depth[$faceindex])
-            move(x=(d12r_text_h_push+d12r_adj_h_push[$faceindex])*d12r_size/100,y=(d12r_text_v_push+d12r_adj_v_push[$faceindex])*d12r_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d12r_symbol_h_push*d12r_size/100,y=d12r_symbol_v_push*d12r_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d12r_num_4_h_push*d12r_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d12r_text_spacing+d12r_adj_spacing[$faceindex],halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("rhombic dodecahedron",ir=d12r_size/2,anchor=BOTTOM,draw=false)
-            zrot(d12r_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d12r_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d12r_adj_depth[$faceindex])
-            move(x=d12r_underscore_h_push*d12r_size/100,y=d12r_underscore_v_push*d12r_size/100)
+        regular_polyhedron("rhombic dodecahedron",ir=d12r_size/2,anchor=BOTTOM,draw=false)
+        zrot(d12r_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d12r_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d12r_adj_depth[$faceindex])
+        move(x=(d12r_text_h_push+d12r_adj_h_push[$faceindex])*d12r_size/100,y=(d12r_text_v_push+d12r_adj_v_push[$faceindex])*d12r_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d12r_symbol_h_push*d12r_size/100,y=d12r_symbol_v_push*d12r_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d12r_num_4_h_push*d12r_size/100)
             offset(delta=txt_stroke)
-            text(d12r_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d12r_text_spacing+d12r_adj_spacing[$faceindex],halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("rhombic dodecahedron",ir=d12r_size/2,anchor=BOTTOM,draw=false)
+        zrot(d12r_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d12r_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d12r_adj_depth[$faceindex])
+        move(x=d12r_underscore_h_push*d12r_size/100,y=d12r_underscore_v_push*d12r_size/100)
+        offset(delta=txt_stroke)
+        text(d12r_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
+        
     }
 }
 
@@ -1369,37 +1338,35 @@ module drawd20(){
             regular_polyhedron("icosahedron",ir=d20_size/2,anchor=BOTTOM,rounding=edge_rounding);
 
         //render numbers & symbols
-        if(render_text) {
-            regular_polyhedron("icosahedron",ir=d20_size/2,anchor=BOTTOM,draw=false)
-            zrot(d20_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d20_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d20_adj_depth[$faceindex])
-            move(x=(d20_text_h_push+d20_adj_h_push[$faceindex])*d20_size/100,y=(d20_text_v_push+d20_adj_v_push[$faceindex])*d20_size/100)
-            if(is_list(txt_merged[$faceindex])) //a symbol
-                move(x=d20_symbol_h_push*d20_size/100,y=d20_symbol_v_push*d20_size/100)
-                offset(delta=sym_stroke)
-                text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
-            else if(txt_merged[$faceindex]=="4") //a number 4
-                right(d20_num_4_h_push*d20_size/100)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
-            else //a double digit number
-                right(space_mult)
-                offset(delta=txt_stroke)
-                text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d20_text_spacing+d20_adj_spacing[$faceindex],halign="center",valign="center");
-            
-            //render underscore
-            regular_polyhedron("icosahedron",ir=d20_size/2,anchor=BOTTOM,draw=false)
-            zrot(d20_rotate[$faceindex]+base_rotate[$faceindex])
-            down(text_depth+d20_adj_depth[$faceindex])
-            linear_extrude(height=2*text_depth+d20_adj_depth[$faceindex])
-            move(x=d20_underscore_h_push*d20_size/100,y=d20_underscore_v_push*d20_size/100)
+        regular_polyhedron("icosahedron",ir=d20_size/2,anchor=BOTTOM,draw=false)
+        zrot(d20_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d20_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d20_adj_depth[$faceindex])
+        move(x=(d20_text_h_push+d20_adj_h_push[$faceindex])*d20_size/100,y=(d20_text_v_push+d20_adj_v_push[$faceindex])*d20_size/100)
+        if(is_list(txt_merged[$faceindex])) //a symbol
+            move(x=d20_symbol_h_push*d20_size/100,y=d20_symbol_v_push*d20_size/100)
+            offset(delta=sym_stroke)
+            text(txt_merged[$faceindex][0],size=sym_mult,font=sym_font,halign="center",valign="center");
+        else if(txt_merged[$faceindex]=="4") //a number 4
+            right(d20_num_4_h_push*d20_size/100)
             offset(delta=txt_stroke)
-            text(d20_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
-        }
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else if(len(txt_merged[$faceindex])==1) //a single digit number that's not 4
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,halign="center",valign="center");
+        else //a double digit number
+            right(space_mult)
+            offset(delta=txt_stroke)
+            text(txt_merged[$faceindex],size=txt_mult+adj_txt[$faceindex],font=txt_font,spacing=d20_text_spacing+d20_adj_spacing[$faceindex],halign="center",valign="center");
+        
+        //render underscore
+        regular_polyhedron("icosahedron",ir=d20_size/2,anchor=BOTTOM,draw=false)
+        zrot(d20_rotate[$faceindex]+base_rotate[$faceindex])
+        down(text_depth+d20_adj_depth[$faceindex])
+        linear_extrude(height=2*text_depth+d20_adj_depth[$faceindex])
+        move(x=d20_underscore_h_push*d20_size/100,y=d20_underscore_v_push*d20_size/100)
+        offset(delta=txt_stroke)
+        text(d20_underscores[$faceindex],size=under_mult,font=under_font,halign="center",valign="center");
     }
 }
 
